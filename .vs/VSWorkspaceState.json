@@ -1,10 +1,8 @@
 {
   "ExpandedNodes": [
     "",
-    "\\STRACKER.BackEnd",
-    "\\STRACKER.BackEnd\\Models",
-    "\\STRACKER.BackEnd\\Repositories"
+    "\\STRACKER.BackEnd"
   ],
-  "SelectedNode": "\\STRACKER.BackEnd\\Repositories\\UserRepository.cs",
+  "SelectedNode": "\\STRACKER.BackEnd\\Program.cs",
   "PreviewInSolutionExplorer": false
 }

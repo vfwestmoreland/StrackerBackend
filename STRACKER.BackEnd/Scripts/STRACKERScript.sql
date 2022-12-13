@@ -7,7 +7,6 @@ GO
 CREATE TABLE [dbo].[users](
 [userId] int PRIMARY KEY IDENTITY(1, 1),
 [firebaseUserId] varchar(28),
-[userName] varchar(10) NOT NULL,
 [email] varchar(254) NOT NULL,
 [firstName] varchar(100) NOT NULL,
 [lastName] varchar(100) NOT NULL,
@@ -17,7 +16,7 @@ CREATE TABLE [dbo].[users](
 GO
 
 CREATE TABLE [dbo].[userType](
-[userTypeId] int,
+[userTypeId] int PRIMARY KEY IDENTITY(1, 1),
 [userTypeName]	varchar(32),
 )
 GO

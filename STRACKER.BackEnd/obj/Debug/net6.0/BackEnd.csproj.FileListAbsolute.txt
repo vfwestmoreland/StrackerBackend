@@ -300,3 +300,13 @@ C:\Users\vfwes\Capstone-Backend\STRACKER.API\STRACKER.BackEnd\bin\Debug\net6.0\r
 C:\Users\vfwes\Capstone-Backend\STRACKER.API\STRACKER.BackEnd\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll
 C:\Users\vfwes\Capstone-Backend\STRACKER.API\STRACKER.BackEnd\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\vfwes\Capstone-Backend\STRACKER.API\STRACKER.BackEnd\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
+C:\Users\vfwes\Capstone-Backend\STRACKER.API\STRACKER.BackEnd\bin\Debug\net6.0\FirebaseAdmin.dll
+C:\Users\vfwes\Capstone-Backend\STRACKER.API\STRACKER.BackEnd\bin\Debug\net6.0\Firebase.Auth.dll
+C:\Users\vfwes\Capstone-Backend\STRACKER.API\STRACKER.BackEnd\bin\Debug\net6.0\Google.Api.Gax.dll
+C:\Users\vfwes\Capstone-Backend\STRACKER.API\STRACKER.BackEnd\bin\Debug\net6.0\Google.Api.Gax.Rest.dll
+C:\Users\vfwes\Capstone-Backend\STRACKER.API\STRACKER.BackEnd\bin\Debug\net6.0\Google.Apis.dll
+C:\Users\vfwes\Capstone-Backend\STRACKER.API\STRACKER.BackEnd\bin\Debug\net6.0\Google.Apis.Auth.PlatformServices.dll
+C:\Users\vfwes\Capstone-Backend\STRACKER.API\STRACKER.BackEnd\bin\Debug\net6.0\Google.Apis.Auth.dll
+C:\Users\vfwes\Capstone-Backend\STRACKER.API\STRACKER.BackEnd\bin\Debug\net6.0\Google.Apis.Core.dll
+C:\Users\vfwes\Capstone-Backend\STRACKER.API\STRACKER.BackEnd\bin\Debug\net6.0\Plugin.FirebaseAuth.dll
+C:\Users\vfwes\Capstone-Backend\STRACKER.API\STRACKER.BackEnd\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

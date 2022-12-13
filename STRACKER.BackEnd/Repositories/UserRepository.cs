@@ -1,5 +1,6 @@
 ﻿using BackEnd.Models;
 using Microsoft.Data.SqlClient;
+using System.Data;
 
 namespace BackEnd.Repositories
 {
@@ -29,7 +30,6 @@ namespace BackEnd.Repositories
                 {
                     cmd.CommandText = @"SELECT  u.userId,
                                                 u.firebaseUserId,
-                                                u.userName,
                                                 u.email,
                                                 u.firstName,
                                                 u.lastName,
@@ -47,18 +47,18 @@ namespace BackEnd.Repositories
                         {
                             User user = new User()
                             {
-                                Id = reader.GetInt32(reader.GetOrdinal("userId")),
+                                Id = reader[(reader.GetOrdinal("userId"))] == DBNull.Value ? null : reader.GetInt32(reader.GetOrdinal("userId")),
                                 FirebaseUserId = reader[(reader.GetOrdinal("firebaseUserId"))] == DBNull.Value ? null : reader.GetString(reader.GetOrdinal("firebaseUserId")),
                                 Email = reader[(reader.GetOrdinal("email"))] == DBNull.Value ? null : reader.GetString(reader.GetOrdinal("email")),
                                 FirstName = reader[(reader.GetOrdinal("firstName"))] == DBNull.Value ? null : reader.GetString(reader.GetOrdinal("firstName")),
                                 LastName = reader[(reader.GetOrdinal("lastName"))] == DBNull.Value ? null : reader.GetString(reader.GetOrdinal("lastName")),
-                                UserTypeId = reader.GetInt32(reader.GetOrdinal("UserTypeId")),
+                                UserTypeId = reader[(reader.GetOrdinal("userTypeId"))] == DBNull.Value ? null : reader.GetInt32(reader.GetOrdinal("userTypeId")),
                                 UserType = new UserType()
                                 {
-                                    UserTypeId = reader.GetInt32(reader.GetOrdinal("UserTypeId")),
-                                    UserTypeName = reader.GetString(reader.GetOrdinal("userTypeName"))
+                                    UserTypeId = reader[(reader.GetOrdinal("userTypeId"))] == DBNull.Value ? null : reader.GetInt32(reader.GetOrdinal("userTypeId")),
+                                    UserTypeName = reader[(reader.GetOrdinal("userTypeName"))] == DBNull.Value ? null : reader.GetString(reader.GetOrdinal("userTypeName")),
                                 },
-                                IsParticipant = reader.GetBoolean(reader.GetOrdinal("isParticipant")),
+                                IsParticipant = reader[(reader.GetOrdinal("isParticipant"))] == DBNull.Value ? null : reader.GetBoolean(reader.GetOrdinal("isParticipant")),
                             };
                             users.Add(user);
                         }
@@ -66,6 +66,90 @@ namespace BackEnd.Repositories
                     }
                 }
             }
+        }
+
+        public User GetUserByFirebaseId(string firebaseUserId)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"SELECT  u.userId,
+                                                u.firebaseUserId,
+                                                u.email,
+                                                u.firstName,
+                                                u.lastName,
+                                                ut.userTypeId,
+                                                ut.userTypeName,
+                                                u.isParticipant
+                                        FROM users u
+                                        LEFT JOIN userType ut ON ut.userTypeId = u.userTypeId
+                                        WHERE u.firebaseUserId = @FirebaseUserId
+					  ";
+
+
+                    cmd.Parameters.AddWithValue("@FirebaseUserId", firebaseUserId);
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            User user = new User()
+                            {
+                                Id = reader[(reader.GetOrdinal("userId"))] == DBNull.Value ? null : reader.GetInt32(reader.GetOrdinal("userId")),
+                                FirebaseUserId = reader[(reader.GetOrdinal("firebaseUserId"))] == DBNull.Value ? null : reader.GetString(reader.GetOrdinal("firebaseUserId")),
+                                Email = reader[(reader.GetOrdinal("email"))] == DBNull.Value ? null : reader.GetString(reader.GetOrdinal("email")),
+                                FirstName = reader[(reader.GetOrdinal("firstName"))] == DBNull.Value ? null : reader.GetString(reader.GetOrdinal("firstName")),
+                                LastName = reader[(reader.GetOrdinal("lastName"))] == DBNull.Value ? null : reader.GetString(reader.GetOrdinal("lastName")),
+                                UserTypeId = reader[(reader.GetOrdinal("userTypeId"))] == DBNull.Value ? null : reader.GetInt32(reader.GetOrdinal("userTypeId")),
+                                UserType = new UserType()
+                                {
+                                    UserTypeId = reader[(reader.GetOrdinal("userTypeId"))] == DBNull.Value ? null : reader.GetInt32(reader.GetOrdinal("userTypeId")),
+                                    UserTypeName = reader[(reader.GetOrdinal("userTypeName"))] == DBNull.Value ? null : reader.GetString(reader.GetOrdinal("userTypeName")),
+                                },
+                                IsParticipant = reader[(reader.GetOrdinal("isParticipant"))] == DBNull.Value ? null : reader.GetBoolean(reader.GetOrdinal("isParticipant")),
+
+                            };
+                            return user;
+                        }
+                        else
+                        {
+                            return null;
+                        }
+                    }
+
+                }
+            }
+        }
+
+        public void AddUser(User user)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+									INSERT INTO users (firebaseUserId, email, firstName, lastName, userTypeId, isParticipant) 
+									OUTPUT INSERTED.userId
+									VALUES (@firebaseUserId, @email, @firstName, @lastName, @userTypeId, @isParticipant)
+									";
+
+                    cmd.Parameters.AddWithValue("@firebaseUserId", user.FirebaseUserId);
+                    cmd.Parameters.AddWithValue("@email", user.Email);
+                    cmd.Parameters.AddWithValue("@firstName", user.FirstName);
+                    cmd.Parameters.AddWithValue("@lastName", user.LastName);
+                    cmd.Parameters.AddWithValue("@userTypeId", user.UserTypeId);
+                    cmd.Parameters.AddWithValue("@isParticipant", user.IsParticipant);
+
+
+                    int id = (int)cmd.ExecuteScalar();
+
+                    user.Id = id;
+                }
+            }
+
         }
     }
 }
